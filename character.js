@@ -1,7 +1,7 @@
 (function(window) {
   function Character(name, makeSvg) {
     this.circle = makeSvg('circle');
-    this.circle.setAttribute('r', 50);
+    this.circle.setAttribute('r', 20);
     this.circle.setAttribute('class', 'character');
 
     this.text = makeSvg('text');
