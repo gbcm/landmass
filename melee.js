@@ -1,6 +1,7 @@
 (function(window) {
   function Melee(characters, makeSvg, dragon) {
     this.characters = characters.slice();
+    makeSvg = makeSvg || window.document.createElement.bind(window.document);
     this.circle = makeSvg('circle');
     this.circle.setAttribute('class', 'melee');
     this.updateRadius();
@@ -14,10 +15,8 @@
     },
 
     updateRadius: function() {
-      if (this.characters.length === 1) {
-        this.radius = 60;
-      }
-      this.circle.setAttribute('r', 60);
+      this.radius = 60;
+      this.circle.setAttribute('r', this.radius);
     },
 
     moveTo: function(x, y) {
