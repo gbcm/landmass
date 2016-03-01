@@ -15,7 +15,7 @@ svg {
   padding: 0;
 }
 
-.add-melee {
+.add-character {
   position: absolute;
   top: 0;
   right: 0;
@@ -27,7 +27,7 @@ svg {
   padding-left: 6px;
 }
 
-.add-melee a {
+.add-character a {
   text-decoration: none;
   padding: 8px 10px;
   color: #fff;
@@ -36,6 +36,17 @@ svg {
 }
 
 .melee {
+  stroke: rgba(177, 54, 54, 0.4);
+  stroke-width: 3px;
+  fill: transparent;
+  cursor: move;
+}
+
+.melee.incoming {
+  stroke: rgba(177, 54, 54, 1);
+}
+
+.character {
   stroke: #AAA;
   stroke-width: 3px;
   fill: transparent;
