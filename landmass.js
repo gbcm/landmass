@@ -7,7 +7,8 @@
   window.bootLand = function() {
     root = $('svg');
 
-    $('.add-melee').addEventListener('click', add);
+    $('.add-melee a').addEventListener('click', add);
+    $('.add-melee').addEventListener('submit', add);
 
     root.addEventListener('mousemove', function(event) {
       if(dragon.draggedEl) {
@@ -27,9 +28,12 @@
   };
 
 
-  function add() {
-    var melee = new Melee('foo');
+  function add(event) {
+    var melee = new Melee($('.add-melee input').value);
+    $('.add-melee input').value = '';
     melee.appendTo(root);
+    event.preventDefault();
+    return false;
   }
 
   var dragon = {
@@ -44,7 +48,7 @@
 
   function Melee(text) {
     this.circle = makeSvg('circle');
-    this.circle.setAttribute('r', 20);
+    this.circle.setAttribute('r', 50);
     this.circle.setAttribute('class', 'melee');
 
     this.circle.addEventListener('mousedown', function(event) {

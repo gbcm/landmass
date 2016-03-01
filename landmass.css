@@ -20,11 +20,19 @@ svg {
   top: 0;
   right: 0;
   font-size: 16px;
-  padding: 8px 10px;
-  text-decoration: none;
-  color: #fff;
-  background: #2F962F;
+  border: solid 2px #2F962F;
+  border-top: none;
+  border-right: none;
   border-radius: 0 0 0 10px;
+  padding-left: 6px;
+}
+
+.add-melee a {
+  text-decoration: none;
+  padding: 8px 10px;
+  color: #fff;
+  background-color: #2F962F;
+  display: inline-block;
 }
 
 .melee {
