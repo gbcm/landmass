@@ -10,7 +10,7 @@ body {
 
 svg {
   width: 100%;
-  height: 100%;
+  height: calc(100vh - 4px);
   margin: 0;
   padding: 0;
 }
@@ -31,4 +31,5 @@ svg {
   stroke: #AAA;
   stroke-width: 3px;
   fill: transparent;
+  cursor: move;
 }

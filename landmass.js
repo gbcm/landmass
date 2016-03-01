@@ -8,6 +8,22 @@
     root = $('svg');
 
     $('.add-melee').addEventListener('click', add);
+
+    root.addEventListener('mousemove', function(event) {
+      if(dragon.draggedEl) {
+        var matrix = root.getScreenCTM(),
+          point = root.createSVGPoint();
+
+        point.x = event.clientX;
+        point.y = event.clientY;
+        point = point.matrixTransform(matrix.inverse());
+        dragon.draggedEl.moveTo(point.x, point.y);
+      }
+    });
+
+    root.addEventListener('mouseup', function() {
+      dragon.stopDragging();
+    });
   };
 
 
@@ -16,10 +32,24 @@
     melee.appendTo(root);
   }
 
+  var dragon = {
+    draggedEl: null,
+    startDragging: function(el) {
+      this.draggedEl = el;
+    },
+    stopDragging: function(el) {
+      this.draggedEl = null;
+    }
+  };
+
   function Melee(text) {
     this.circle = makeSvg('circle');
     this.circle.setAttribute('r', 20);
     this.circle.setAttribute('class', 'melee');
+
+    this.circle.addEventListener('mousedown', function(event) {
+      dragon.startDragging(this);
+    }.bind(this));
 
     this.text = makeSvg('text');
     this.text.setAttribute('text-anchor', 'middle');
@@ -28,8 +58,8 @@
 
   Melee.prototype = {
     appendTo: function(parent) {
-      parent.appendChild(this.circle);
       parent.appendChild(this.text);
+      parent.appendChild(this.circle);
 
       this.moveTo(500, 500);
     },
