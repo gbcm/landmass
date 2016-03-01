@@ -1,7 +1,6 @@
 (function(window) {
   function Melee(characters, makeSvg, dragon) {
     this.characters = characters.slice();
-    makeSvg = makeSvg || window.document.createElement.bind(window.document);
     this.circle = makeSvg('circle');
     this.circle.setAttribute('class', 'melee');
     this.updateRadius();
@@ -51,6 +50,10 @@
     },
 
     overlaps: function(other) {
+      if (this === other) {
+        return false;
+      }
+
       var center = {
         x: this.circle.getAttribute('cx'),
         y: this.circle.getAttribute('cy')
@@ -65,5 +68,9 @@
     }
   };
 
-  window.Melee = Melee;
+  window.meleeFactory = function(makeSvg, dragon) {
+    return function newMelee(characters) {
+      return new Melee(characters, makeSvg, dragon);
+    };
+  };
 })(window);
