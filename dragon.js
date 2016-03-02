@@ -1,5 +1,6 @@
 (function(window) {
   var melees = [];
+  var isFirstMove = false;
 
   var dragon = {
     draggedMelee: null,
@@ -8,13 +9,11 @@
         throw new Error("startDragging was called while already dragging");
       }
       this.draggedMelee = meleeBeingDragged;
-      melees.forEach(function(m){
-        m.moveToTop();
-      });
-      meleeBeingDragged.moveToTop();
+      isFirstMove = true;
     },
     stopDragging: function() {
       this.draggedMelee = null;
+      isFirstMove = false;
     },
     addMelee: function(melee) {
       melees.push(melee);
@@ -29,20 +28,27 @@
     melees = [];
     root.addEventListener('mousemove', function(event) {
       if(dragon.draggedMelee) {
+        if (isFirstMove) {
+          melees.forEach(function (m) {
+            m.moveToTop();
+          });
+          dragon.draggedMelee.moveToTop();
+        }
+
         var matrix = root.getScreenCTM(),
           point = root.createSVGPoint();
 
-          point.x = event.clientX;
-          point.y = event.clientY;
-          point = point.matrixTransform(matrix.inverse());
-          dragon.draggedMelee.moveTo(point.x, point.y);
+        point.x = event.clientX;
+        point.y = event.clientY;
+        point = point.matrixTransform(matrix.inverse());
+        dragon.draggedMelee.moveTo(point.x, point.y);
 
-          melees.forEach(function(melee) {
-            melee.removeClass('incoming');
-            if (melee.overlaps(dragon.draggedMelee)) {
-              melee.addClass('incoming');
-            }
-          });
+        melees.forEach(function(melee) {
+          melee.removeClass('incoming');
+          if (melee.overlaps(dragon.draggedMelee)) {
+            melee.addClass('incoming');
+          }
+        });
       }
     });
 
@@ -67,7 +73,7 @@
 
       dragon.stopDragging();
     });
-      
+
     return dragon;
   };
 })(window);
