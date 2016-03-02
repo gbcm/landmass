@@ -1,4 +1,6 @@
 (function(window) {
+  var melees = [];
+
   var dragon = {
     draggedMelee: null,
     startDragging: function(melee) {
@@ -6,10 +8,16 @@
     },
     stopDragging: function() {
       this.draggedMelee = null;
+    },
+    addMelee: function(melee) {
+      melees.push(melee);
+    },
+    removeMelee: function(melee) {
+      melees.splice(melees.indexOf(melee), 1);
     }
   };
 
-  window.burninate = function(root, melees) {
+  window.burninate = function(root) {
     root.addEventListener('mousemove', function(event) {
       if(dragon.draggedMelee) {
         var matrix = root.getScreenCTM(),
@@ -36,7 +44,7 @@
           melee.addCharacters(dragon.draggedMelee.characters);
           dragon.draggedMelee.remove();
 
-          melees.splice(melees.indexOf(dragon.draggedMelee), 1);
+          dragon.removeMelee(dragon.draggedMelee);
         }
       });
       dragon.stopDragging();

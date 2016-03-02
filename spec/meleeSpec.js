@@ -9,8 +9,8 @@ describe('Melee', function() {
       melee3 = this.meleeFactory([]);
 
     melee1.moveTo(0, 0);
-    melee2.moveTo(115, 0);
-    melee3.moveTo(116, 0);
+    melee2.moveTo(155, 0);
+    melee3.moveTo(156, 0);
 
     expect(melee1.overlaps(melee2)).toBe(true);
     expect(melee1.overlaps(melee3)).toBe(false);
@@ -22,8 +22,8 @@ describe('Melee', function() {
       melee3 = this.meleeFactory([]);
 
     melee1.moveTo(0, 0);
-    melee2.moveTo(0, 115);
-    melee3.moveTo(0, 116);
+    melee2.moveTo(0, 155);
+    melee3.moveTo(0, 156);
 
     expect(melee1.overlaps(melee2)).toBe(true);
     expect(melee1.overlaps(melee3)).toBe(false);
@@ -35,8 +35,8 @@ describe('Melee', function() {
       melee3 = this.meleeFactory([]);
 
     melee1.moveTo(0, 0);
-    melee2.moveTo(80, 80);
-    melee3.moveTo(90, 90);
+    melee2.moveTo(100, 100);
+    melee3.moveTo(120, 120);
 
     expect(melee1.overlaps(melee2)).toBe(true);
     expect(melee1.overlaps(melee3)).toBe(false);

@@ -1,4 +1,5 @@
 (function(window) {
+  var newMelee;
   var characterOffsets = [
     { x: -40, y: -40 },
     { x: 0, y: -40 },
@@ -62,6 +63,19 @@
           this.dragon.startDragging(this);
         }
       }.bind(this));
+
+      this.circle.addEventListener('dblclick', function(event) {
+        var center = this.center();
+        this.characters.forEach(function(character, index) {
+          var m = newMelee([]);
+          m.appendTo(parent);
+          m.addCharacters([character]);
+          var meleeCenter = characterOffsets[index];
+          m.moveTo(center.x + meleeCenter.x, center.y + meleeCenter.y);
+        });
+        this.remove();
+        this.dragon.removeMelee(this);
+      }.bind(this));
     },
 
     remove: function() {
@@ -92,8 +106,12 @@
   };
 
   window.meleeFactory = function(makeSvg, dragon) {
-    return function newMelee(characters) {
-      return new Melee(characters, makeSvg, dragon);
+    newMelee = function newMelee(characters) {
+      var melee = new Melee(characters, makeSvg, dragon);
+      dragon.addMelee(melee);
+      return melee;
     };
+
+    return newMelee;
   };
 })(window);

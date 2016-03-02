@@ -1,13 +1,12 @@
 (function(window) {
   var document = window.document,
     $ = document.querySelector.bind(document),
-    makeSvg = document.createElementNS.bind(document, 'http://www.w3.org/2000/svg'),
-    melees = [];
+    makeSvg = document.createElementNS.bind(document, 'http://www.w3.org/2000/svg');
   var root, dragon, meleeFactory, characterFactory;
 
   window.bootLand = function() {
     root = $('svg');
-    dragon = window.burninate(root, melees);
+    dragon = window.burninate(root);
     meleeFactory = window.meleeFactory(makeSvg, dragon);
     characterFactory = window.characterFactory(makeSvg);
 
@@ -20,7 +19,6 @@
       melee = meleeFactory([character]);
     $('.add-character input').value = '';
     melee.appendTo(root);
-    melees.push(melee);
     event.preventDefault();
     return false;
   }
