@@ -1,6 +1,7 @@
 describe('Melee', function() {
   beforeEach(function() {
-    this.meleeFactory = meleeFactory(document.createElementNS.bind(document, 'http://www.w3.org/2000/svg'));
+    var dragon = window.burninate(document.createElement("div"));
+    this.meleeFactory = meleeFactory(document.createElementNS.bind(document, 'http://www.w3.org/2000/svg'), dragon);
   });
 
   it('overlaps to the left', function() {
