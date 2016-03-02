@@ -42,6 +42,7 @@
     addCharacters: function(chars) {
       this.characters = this.characters.concat(chars);
       this.updateLayout();
+      this.moveToTop();
     },
 
     updateLayout: function() {
