@@ -18,9 +18,21 @@
     this.circle.setAttribute('class', 'melee');
     this.circle.setAttribute('r', this.radius);
 
-    this.closeCircle = makeSvg('circle');
-    this.closeCircle.setAttribute('class', 'close');
-    this.closeCircle.setAttribute('r', this.radius * 2);
+    this.rangeBands = [];
+    var longCircle = makeSvg('circle');
+    longCircle.setAttribute('class', 'long');
+    longCircle.setAttribute('r', this.radius * 7 + 30);
+    this.rangeBands.push(longCircle);
+
+    var medCircle = makeSvg('circle');
+    medCircle.setAttribute('class', 'medium');
+    medCircle.setAttribute('r', this.radius * 5 + 20);
+    this.rangeBands.push(medCircle);
+
+    var closeCircle = makeSvg('circle');
+    closeCircle.setAttribute('class', 'close');
+    closeCircle.setAttribute('r', this.radius * 3 + 10);
+    this.rangeBands.push(closeCircle);
 
     this.dragon = dragon;
   }
@@ -41,8 +53,10 @@
         character.moveTo(center.x + offset.x, center.y + offset.y);
       }
 
-      this.closeCircle.setAttribute('cx', center.x);
-      this.closeCircle.setAttribute('cy', center.y);
+      this.rangeBands.forEach(function(rangeBand) {
+        rangeBand.setAttribute('cx', center.x);
+        rangeBand.setAttribute('cy', center.y);
+      });
     },
 
     center: function() {
@@ -61,7 +75,9 @@
 
     appendTo: function(parent) {
       this._parent = parent;
-      this._parent.appendChild(this.closeCircle);
+      this.rangeBands.forEach(function(rangeBand) {
+        parent.appendChild(rangeBand);
+      });
       this.moveToTop();
       this.moveTo(500, 500);
 
@@ -96,8 +112,10 @@
       this.characters = [];
       this.circle.remove();
       this.circle = null;
-      this.closeCircle.remove();
-      this.closeCircle = null;
+      this.rangeBands.forEach(function(rangeBand) {
+        rangeBand.remove();
+      });
+      this.rangeBands = null;
     },
 
     addClass: function(klass) {

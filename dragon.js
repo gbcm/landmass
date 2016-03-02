@@ -3,12 +3,15 @@
 
   var dragon = {
     draggedMelee: null,
-    startDragging: function(melee) {
+    startDragging: function(meleeBeingDragged) {
       if (this.draggedMelee) {
         throw new Error("startDragging was called while already dragging");
       }
-      this.draggedMelee = melee;
-      melee.moveToTop();
+      this.draggedMelee = meleeBeingDragged;
+      melees.forEach(function(m){
+        m.moveToTop();
+      });
+      meleeBeingDragged.moveToTop();
     },
     stopDragging: function() {
       this.draggedMelee = null;
@@ -22,6 +25,7 @@
   };
 
   window.burninate = function(root) {
+    console.log("Burninating the countryside. Burninating the village.");
     melees = [];
     root.addEventListener('mousemove', function(event) {
       if(dragon.draggedMelee) {
