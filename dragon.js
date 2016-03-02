@@ -4,6 +4,9 @@
   var dragon = {
     draggedMelee: null,
     startDragging: function(melee) {
+      if (this.draggedMelee) {
+        throw new Error("startDragging was called while already dragging");
+      }
       this.draggedMelee = melee;
     },
     stopDragging: function() {
@@ -18,6 +21,7 @@
   };
 
   window.burninate = function(root) {
+    melees = [];
     root.addEventListener('mousemove', function(event) {
       if(dragon.draggedMelee) {
         var matrix = root.getScreenCTM(),
@@ -38,18 +42,27 @@
     });
 
     root.addEventListener('mouseup', function() {
+      var target;
+
       melees.forEach(function(melee) {
         melee.removeClass('incoming');
-        if (dragon.draggedMelee && melee.overlaps(dragon.draggedMelee)) {
-          melee.addCharacters(dragon.draggedMelee.characters);
-          dragon.draggedMelee.remove();
+      });
 
+      if (dragon.draggedMelee) {
+        target = melees.find(function(melee) {
+          return melee.overlaps(dragon.draggedMelee);
+        });
+
+        if (target) {
+          target.addCharacters(dragon.draggedMelee.characters);
+          dragon.draggedMelee.remove();
           dragon.removeMelee(dragon.draggedMelee);
         }
-      });
+      }
+
       dragon.stopDragging();
     });
-
+      
     return dragon;
   };
 })(window);
