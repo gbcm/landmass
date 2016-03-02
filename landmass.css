@@ -38,12 +38,19 @@ svg {
 .melee {
   stroke: rgba(177, 54, 54, 0.4);
   stroke-width: 3px;
-  fill: transparent;
+  fill: white;
   cursor: move;
 }
 
 .melee.incoming {
   stroke: rgba(177, 54, 54, 1);
+}
+
+.close {
+  stroke: rgba(177, 54, 54, 0.4);
+  stroke-width: 3px;
+  fill: rgba(255, 0, 0, 0.3);
+  cursor: move;
 }
 
 .character {

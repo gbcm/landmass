@@ -8,6 +8,7 @@
         throw new Error("startDragging was called while already dragging");
       }
       this.draggedMelee = melee;
+      melee.moveToTop();
     },
     stopDragging: function() {
       this.draggedMelee = null;
