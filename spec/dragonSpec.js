@@ -28,12 +28,15 @@ describe('Dragon', function() {
       melee2 = this.meleeFactory([characterBar]),
       melee3 = this.meleeFactory([characterBaz]);
 
+    melee1.appendTo(this.root);
+    melee2.appendTo(this.root);
+    melee3.appendTo(this.root);
+
     spyOn(melee3, "remove");
     spyOn(this.subject, "removeMelee").and.callThrough();
 
     melee1.moveTo(0, 0);
     melee2.moveTo(0, 0);
-    melee3.appendTo(this.root);
     triggerMouseEvent(melee3.circle, "mousedown");
     melee3.moveTo(0, 0);
     triggerMouseEvent(melee3.circle, "mouseup");
