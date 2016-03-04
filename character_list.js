@@ -9,10 +9,14 @@
       parent.appendChild(this.root);
     },
 
-    addCharacter: function (name) {
+    addCharacter: function (character) {
       this.root.className = "";
       var characterItem = document.createElement("li");
-      characterItem.innerText = name;
+      var initiativeField = document.createElement("input");
+      initiativeField.type = "text";
+      initiativeField.setAttribute("value", character.initiative);
+      characterItem.innerText = character.name + ": ";
+      characterItem.appendChild(initiativeField);
       this.root.appendChild(characterItem);
     }
   };

@@ -14,21 +14,23 @@ describe('CharacterList', function () {
   });
 
   it('should remove hidden class when a character is added', function () {
-    this.subject.addCharacter("Foo");
+    this.subject.addCharacter({name: "Foo", initiative: 3});
     expect(this.dom.querySelector("ol").className).toEqual("");
   });
 
-  it('should display characters in a list', function () {
-    this.subject.addCharacter("Foo");
-    this.subject.addCharacter("Bar");
-    this.subject.addCharacter("Baz");
+  it('should display characters and initiatives in a list', function () {
+    this.subject.addCharacter({name: "Foo", initiative: 3});
+    this.subject.addCharacter({name: "Bar", initiative: 3});
+    this.subject.addCharacter({name: "Baz", initiative: 3});
     expect(this.dom.querySelector("ol").innerHTML).toEqual(
-      "<li>Foo</li><li>Bar</li><li>Baz</li>");
+      "<li>Foo: <input type=\"text\" value=\"3\"></li>" +
+      "<li>Bar: <input type=\"text\" value=\"3\"></li>" +
+      "<li>Baz: <input type=\"text\" value=\"3\"></li>");
   });
 
   it("should properly encode names", function () {
-    this.subject.addCharacter("<b>nope");
+    this.subject.addCharacter({name: "<b>nope", initiative: 3});
     expect(this.dom.querySelector("ol").innerHTML).toEqual(
-      "<li>&lt;b&gt;nope</li>")
+      "<li>&lt;b&gt;nope: <input type=\"text\" value=\"3\"></li>")
   })
 });

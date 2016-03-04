@@ -21,7 +21,7 @@
     var characterName = $('.add-character input').value;
     var characterCircle = characterCircleFactory(characterName),
       melee = meleeFactory([characterCircle]);
-    characterList.addCharacter(characterName);
+    characterList.addCharacter({ name: characterName, initiative: 3 });
     $('.add-character input').value = '';
     melee.appendTo(root);
     event.preventDefault();

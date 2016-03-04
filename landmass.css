@@ -56,6 +56,10 @@ svg {
   list-style-type: none;
 }
 
+#character_list input {
+  width: 40px;
+}
+
 .melee {
   stroke: rgba(177, 54, 54, 0.4);
   stroke-width: 3px;
