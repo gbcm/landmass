@@ -2,7 +2,7 @@
   var document = window.document,
     $ = document.querySelector.bind(document),
     makeSvg = document.createElementNS.bind(document, 'http://www.w3.org/2000/svg');
-  var root, dragon, meleeFactory, characterCircleFactory;
+  var root, dragon, meleeFactory, characterCircleFactory, characterList;
 
   window.bootLand = function() {
     root = $('svg');
@@ -12,11 +12,16 @@
 
     $('.add-character a').addEventListener('click', add);
     $('.add-character').addEventListener('submit', add);
+
+    characterList = new CharacterList();
+    characterList.appendTo(document.querySelector("#character_list"));
   };
 
   function add(event) {
-    var characterCircle = characterCircleFactory($('.add-character input').value),
+    var characterName = $('.add-character input').value;
+    var characterCircle = characterCircleFactory(characterName),
       melee = meleeFactory([characterCircle]);
+    characterList.addCharacter(characterName);
     $('.add-character input').value = '';
     melee.appendTo(root);
     event.preventDefault();
