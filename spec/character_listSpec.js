@@ -1,4 +1,8 @@
 describe('CharacterList', function () {
+  var arrayify = function (nodelist) {
+    return Array.prototype.slice.call(nodelist);
+  };
+
   beforeEach(function () {
     this.subject = new CharacterList();
     this.dom = document.createElement("div");
@@ -22,15 +26,46 @@ describe('CharacterList', function () {
     this.subject.addCharacter({name: "Foo", initiative: 3});
     this.subject.addCharacter({name: "Bar", initiative: 3});
     this.subject.addCharacter({name: "Baz", initiative: 3});
-    expect(this.dom.querySelector("ol").innerHTML).toEqual(
-      "<li>Foo: <input type=\"text\" value=\"3\"></li>" +
-      "<li>Bar: <input type=\"text\" value=\"3\"></li>" +
-      "<li>Baz: <input type=\"text\" value=\"3\"></li>");
+    var items = arrayify(this.dom.querySelectorAll("li"));
+
+    var texts = items.map(function (item) { return item.innerText });
+    expect(texts).toEqual(["Foo: ", "Bar: ", "Baz: "]);
+    var values = items.map(function (item) { return item.querySelector("input").value });
+    expect(values).toEqual(["3", "3", "3"]);
   });
 
   it("should properly encode names", function () {
     this.subject.addCharacter({name: "<b>nope", initiative: 3});
     expect(this.dom.querySelector("ol").innerHTML).toEqual(
-      "<li>&lt;b&gt;nope: <input type=\"text\" value=\"3\"></li>")
-  })
+      "<li>&lt;b&gt;nope: <input type=\"text\"></li>")
+  });
+
+  it("should sort itself when a character is added", function () {
+    this.subject.addCharacter({name: "Foo", initiative: 3});
+    this.subject.addCharacter({name: "Bar", initiative: 1});
+    this.subject.addCharacter({name: "Baz", initiative: 4});
+    var items = arrayify(this.dom.querySelectorAll("li"));
+
+    var texts = items.map(function (item) { return item.innerText });
+    expect(texts).toEqual(["Baz: ", "Foo: ", "Bar: "]);
+    var values = items.map(function (item) { return item.querySelector("input").value });
+    expect(values).toEqual(["4", "3", "1"]);
+  });
+
+  it("should sort itself when an initiative changes", function () {
+    this.subject.addCharacter({name: "Foo", initiative: 3});
+    this.subject.addCharacter({name: "Bar", initiative: 4});
+    this.subject.addCharacter({name: "Baz", initiative: 1});
+
+    var fooInput = this.dom.querySelector("input");
+    fooInput.value = 2;
+    var event = new UIEvent("blur");
+    fooInput.dispatchEvent(event);
+
+    var items = arrayify(this.dom.querySelectorAll("li"));
+    var texts = items.map(function (item) { return item.innerText });
+    expect(texts).toEqual(["Foo: ", "Bar: ", "Baz: "]);
+    var values = items.map(function (item) { return item.querySelector("input").value });
+    expect(values).toEqual(["3", "2", "1"]);
+  });
 });
