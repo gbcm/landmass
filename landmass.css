@@ -15,6 +15,10 @@ svg {
   padding: 0;
 }
 
+.hidden {
+  display: none;
+}
+
 .add-character {
   position: absolute;
   top: 0;
@@ -33,6 +37,23 @@ svg {
   color: #fff;
   background-color: #2F962F;
   display: inline-block;
+}
+
+#character_list ol {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 16px;
+  border: solid 2px #345296;
+  border-top: none;
+  border-left: none;
+  border-radius: 0 0 10px 0;
+  padding: 12px;
+  margin: 0px;
+}
+
+#character_list li {
+  list-style-type: none;
 }
 
 .melee {

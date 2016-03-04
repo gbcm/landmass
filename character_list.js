@@ -1,6 +1,7 @@
 (function (window) {
   function CharacterList() {
     this.root = document.createElement("ol");
+    this.root.className = "hidden";
   }
 
   CharacterList.prototype = {
@@ -9,6 +10,7 @@
     },
 
     addCharacter: function (name) {
+      this.root.className = "";
       var characterItem = document.createElement("li");
       characterItem.innerText = name;
       this.root.appendChild(characterItem);
