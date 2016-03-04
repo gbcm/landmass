@@ -65,7 +65,7 @@
         });
 
         if (target) {
-          target.addCharacters(dragon.draggedMelee.characters);
+          target.addCharacterCircles(dragon.draggedMelee.characterCircles);
           dragon.draggedMelee.remove();
           dragon.removeMelee(dragon.draggedMelee);
         }

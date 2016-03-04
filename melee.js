@@ -12,8 +12,8 @@
     { x: 40, y: 40 }
   ];
 
-  function Melee(characters, makeSvg, dragon) {
-    this.characters = characters.slice();
+  function Melee(characterCircles, makeSvg, dragon) {
+    this.characterCircles = characterCircles.slice();
     this.circle = makeSvg('circle');
     this.circle.setAttribute('class', 'melee');
     this.circle.setAttribute('r', this.radius);
@@ -39,8 +39,8 @@
 
   Melee.prototype = {
     radius: 80,
-    addCharacters: function(chars) {
-      this.characters = this.characters.concat(chars);
+    addCharacterCircles: function(chars) {
+      this.characterCircles = this.characterCircles.concat(chars);
       this.updateLayout();
       this.moveToTop();
     },
@@ -48,8 +48,8 @@
     updateLayout: function() {
       var center = this.center();
 
-      for (var i = 0, length = this.characters.length; i < length; i++) {
-        var character = this.characters[i],
+      for (var i = 0, length = this.characterCircles.length; i < length; i++) {
+        var character = this.characterCircles[i],
           offset = characterOffsets[i];
         character.moveTo(center.x + offset.x, center.y + offset.y);
       }
@@ -90,10 +90,10 @@
 
       this.circle.addEventListener('dblclick', function(event) {
         var center = this.center();
-        this.characters.forEach(function(character, index) {
+        this.characterCircles.forEach(function(character, index) {
           var m = newMelee([]);
           m.appendTo(parent);
-          m.addCharacters([character]);
+          m.addCharacterCircles([character]);
           var meleeCenter = characterOffsets[index];
           m.moveTo(center.x + meleeCenter.x, center.y + meleeCenter.y);
         });
@@ -104,13 +104,13 @@
 
     moveToTop: function() {
       this._parent.appendChild(this.circle);
-      this.characters.forEach(function(child) {
+      this.characterCircles.forEach(function(child) {
         child.appendTo(this._parent);
       }.bind(this));
     },
 
     remove: function() {
-      this.characters = [];
+      this.characterCircles = [];
       this.circle.remove();
       this.circle = null;
       this.rangeBands.forEach(function(rangeBand) {

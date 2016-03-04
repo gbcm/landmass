@@ -1,5 +1,5 @@
 (function(window) {
-  function Character(name, makeSvg) {
+  function CharacterCircle(name, makeSvg) {
     this.circle = makeSvg('circle');
     this.circle.setAttribute('r', 20);
     this.circle.setAttribute('class', 'character');
@@ -9,7 +9,7 @@
     this.text.innerHTML = name;
   }
 
-  Character.prototype = {
+  CharacterCircle.prototype = {
     appendTo: function(parent) {
       parent.appendChild(this.text);
       parent.appendChild(this.circle);
@@ -23,9 +23,9 @@
     }
   };
 
-  window.characterFactory = function(makeSvg) {
+  window.characterCircleFactory = function(makeSvg) {
     return function newCharacter(name) {
-      return new Character(name, makeSvg);
+      return new CharacterCircle(name, makeSvg);
     };
   };
 })(window);
