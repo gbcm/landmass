@@ -16,6 +16,11 @@
       this.render();
     },
 
+    updateInit: function (character, initiativeField) {
+      character.initiative = parseInt(initiativeField.value, 10);
+      this.render();
+    },
+
     render: function () {
       this.root.innerHTML = "";
       this.characters.sort(function(a, b) {
@@ -26,18 +31,25 @@
         var initiativeField = document.createElement("input");
         initiativeField.type = "text";
         initiativeField.value = character.initiative;
+
         initiativeField.addEventListener("click", function () {
           initiativeField.select();
         });
+
         initiativeField.addEventListener("blur", function () {
-          character.initiative = parseInt(initiativeField.value, 10);
-          this.render();
+          this.updateInit(character, initiativeField);
+        }.bind(this));
+
+        initiativeField.addEventListener("keyup", function (event) {
+          if (event.keyCode === 13) {
+            this.updateInit(character, initiativeField);
+          }
         }.bind(this));
         characterItem.innerText = character.name + ": ";
         characterItem.appendChild(initiativeField);
         this.root.appendChild(characterItem);
       }.bind(this));
-    }
+    },
   };
 
   window.CharacterList = CharacterList;
