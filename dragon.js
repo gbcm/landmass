@@ -26,7 +26,8 @@
   window.burninate = function(root) {
     console.log("Burninating the countryside. Burninating the village.");
     melees = [];
-    root.addEventListener('mousemove', function(event) {
+
+    var mousemovehandler = function(event) {
       if(dragon.draggedMelee) {
         if (isFirstMove) {
           melees.forEach(function (m) {
@@ -50,9 +51,10 @@
           }
         });
       }
-    });
+    };
+    root.addEventListener('mousemove', mousemovehandler);
 
-    root.addEventListener('mouseup', function() {
+    var mouseupHandler = function() {
       var target;
 
       melees.forEach(function(melee) {
@@ -72,7 +74,8 @@
       }
 
       dragon.stopDragging();
-    });
+    };
+    root.addEventListener('mouseup', mouseupHandler);
 
     return dragon;
   };
