@@ -17,7 +17,7 @@
     },
 
     updateInit: function (character, initiativeField) {
-      character.initiative = parseInt(initiativeField.value, 10);
+      character.initiative = parseFloat(initiativeField.value);
       this.render();
     },
 

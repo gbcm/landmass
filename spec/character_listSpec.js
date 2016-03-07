@@ -68,4 +68,21 @@ describe('CharacterList', function () {
     var values = items.map(function (item) { return item.querySelector("input").value });
     expect(values).toEqual(["3", "2", "1"]);
   });
+
+  it("should allow decimal initiative values", function () {
+    this.subject.addCharacter({name: "Foo", initiative: 2.1});
+    this.subject.addCharacter({name: "Bar", initiative: 4.7});
+    this.subject.addCharacter({name: "Baz", initiative: 1.2});
+
+    var fooInput = this.dom.querySelectorAll("input")[1];
+    fooInput.value = 4.1;
+    var event = new UIEvent("blur");
+    fooInput.dispatchEvent(event);
+
+    var items = arrayify(this.dom.querySelectorAll("li"));
+    var texts = items.map(function (item) { return item.innerText });
+    expect(texts).toEqual(["Bar: ", "Foo: ", "Baz: "]);
+    var values = items.map(function (item) { return item.querySelector("input").value });
+    expect(values).toEqual(["4.7", "4.1", "1.2"]);
+  });
 });
