@@ -28,6 +28,7 @@
     melees = [];
 
     var mousemovehandler = function(event) {
+      event.preventDefault();
       if(dragon.draggedMelee) {
         if (isFirstMove) {
           melees.forEach(function (m) {
@@ -39,8 +40,8 @@
         var matrix = root.getScreenCTM(),
           point = root.createSVGPoint();
 
-        point.x = event.clientX;
-        point.y = event.clientY;
+        point.x = event.clientX || event.pageX;
+        point.y = event.clientY || event.pageY;
         point = point.matrixTransform(matrix.inverse());
         dragon.draggedMelee.moveTo(point.x, point.y);
 
@@ -53,6 +54,7 @@
       }
     };
     root.addEventListener('mousemove', mousemovehandler);
+    root.addEventListener('touchmove', mousemovehandler);
 
     var mouseupHandler = function() {
       var target;
@@ -76,6 +78,7 @@
       dragon.stopDragging();
     };
     root.addEventListener('mouseup', mouseupHandler);
+    root.addEventListener('touchend', mouseupHandler);
 
     return dragon;
   };

@@ -76,21 +76,25 @@
 
     appendTo: function(parent) {
       this._parent = parent;
-      this.rangeBands.forEach(function(rangeBand) {
+      this.rangeBands.forEach(function (rangeBand) {
         parent.appendChild(rangeBand);
       });
       this.moveToTop();
       this.moveTo(500, 500);
 
-      this.circle.addEventListener('mousedown', function(event) {
+      this.circle.addEventListener('mousedown', function (event) {
         if (event.button === 0 && !event.altKey && !event.ctrlKey) {
           this.dragon.startDragging(this);
         }
       }.bind(this));
 
-      this.circle.addEventListener('dblclick', function(event) {
+      this.circle.addEventListener('touchstart', function (event) {
+        this.dragon.startDragging(this);
+      }.bind(this));
+
+      var doubleClickHandler = function (event) {
         var center = this.center();
-        this.characterCircles.forEach(function(character, index) {
+        this.characterCircles.forEach(function (character, index) {
           var m = newMelee([]);
           m.appendTo(parent);
           m.addCharacterCircles([character]);
@@ -99,6 +103,22 @@
         });
         this.remove();
         this.dragon.removeMelee(this);
+      }.bind(this);
+
+      var firstTouchTime = null;
+      this.circle.addEventListener('dblclick', doubleClickHandler);
+      this.circle.addEventListener('touchend', function () {
+        var now = new Date().getTime();
+
+        if (firstTouchTime === null) {
+          firstTouchTime = new Date().getTime();
+        } else {
+          if (now - firstTouchTime > 0 && now - firstTouchTime < 500) {
+            setTimeout(doubleClickHandler);
+          }
+
+          firstTouchTime = null;
+        }
       }.bind(this));
     },
 
