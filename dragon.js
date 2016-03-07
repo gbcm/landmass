@@ -22,8 +22,18 @@
       this.thingBeingDragged = null;
       this.isFirstMove = false;
     },
-    addDraggable: function (draggable) {
+    addDraggable: function (draggable, dragHandle) {
       this.draggables.push(draggable);
+
+      dragHandle.addEventListener('mousedown', function (event) {
+        if (event.button === 0 && !event.altKey && !event.ctrlKey) {
+          this.startDragging(draggable);
+        }
+      }.bind(this));
+
+      dragHandle.addEventListener('touchstart', function () {
+        this.startDragging(draggable);
+      }.bind(this));
     },
     removeDraggable: function (draggable) {
       this.draggables.splice(this.draggables.indexOf(draggable), 1);

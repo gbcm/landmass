@@ -12,27 +12,14 @@
     { x: 40, y: 40 }
   ];
 
-  function Melee(characterCircles, makeSvg, dragon) {
+  function Melee(characterCircles, dragon) {
     this.characterCircles = characterCircles.slice();
-    this.circle = makeSvg('circle');
-    this.circle.setAttribute('class', 'melee');
-    this.circle.setAttribute('r', this.radius);
+    this.circle = makeCircle('melee',this.radius);
 
     this.rangeBands = [];
-    var longCircle = makeSvg('circle');
-    longCircle.setAttribute('class', 'long');
-    longCircle.setAttribute('r', this.radius * 7 + 30);
-    this.rangeBands.push(longCircle);
-
-    var medCircle = makeSvg('circle');
-    medCircle.setAttribute('class', 'medium');
-    medCircle.setAttribute('r', this.radius * 5 + 20);
-    this.rangeBands.push(medCircle);
-
-    var closeCircle = makeSvg('circle');
-    closeCircle.setAttribute('class', 'close');
-    closeCircle.setAttribute('r', this.radius * 3 + 10);
-    this.rangeBands.push(closeCircle);
+    this.rangeBands.push(makeCircle('long', this.radius * 7 + 30));
+    this.rangeBands.push(makeCircle('medium', this.radius * 5 + 20));
+    this.rangeBands.push(makeCircle('close', this.radius * 3 + 10));
 
     this.dragon = dragon;
   }
@@ -48,7 +35,6 @@
       this.updateLayout();
       this.moveToTop();
     },
-
     updateLayout: function() {
       var center = this.center();
 
@@ -86,44 +72,22 @@
       this.moveToTop();
       this.moveTo(500, 500);
 
-      this.circle.addEventListener('mousedown', function (event) {
-        if (event.button === 0 && !event.altKey && !event.ctrlKey) {
-          this.dragon.startDragging(this);
-        }
+      this.dragon.addDraggable(this, this.circle);
+
+      bindDoubleClick(this.circle, this.doubleClickHandler.bind(this))
+    },
+
+    doubleClickHandler: function () {
+      var center = this.center();
+      this.characterCircles.forEach(function (character, index) {
+        var m = newMelee([]);
+        m.appendTo(this._parent);
+        m.addCharacterCircles([character]);
+        var meleeCenter = characterOffsets[index];
+        m.moveTo(center.x + meleeCenter.x, center.y + meleeCenter.y);
       }.bind(this));
-
-      this.circle.addEventListener('touchstart', function (event) {
-        this.dragon.startDragging(this);
-      }.bind(this));
-
-      var doubleClickHandler = function (event) {
-        var center = this.center();
-        this.characterCircles.forEach(function (character, index) {
-          var m = newMelee([]);
-          m.appendTo(parent);
-          m.addCharacterCircles([character]);
-          var meleeCenter = characterOffsets[index];
-          m.moveTo(center.x + meleeCenter.x, center.y + meleeCenter.y);
-        });
-        this.remove();
-        this.dragon.removeDraggable(this);
-      }.bind(this);
-
-      var firstTouchTime = null;
-      this.circle.addEventListener('dblclick', doubleClickHandler);
-      this.circle.addEventListener('touchend', function () {
-        var now = new Date().getTime();
-
-        if (firstTouchTime === null) {
-          firstTouchTime = new Date().getTime();
-        } else {
-          if (now - firstTouchTime > 0 && now - firstTouchTime < 500) {
-            setTimeout(doubleClickHandler);
-          }
-
-          firstTouchTime = null;
-        }
-      }.bind(this));
+      this.remove();
+      this.dragon.removeDraggable(this);
     },
 
     moveToTop: function() {
@@ -164,11 +128,9 @@
     }
   };
 
-  window.meleeFactory = function(makeSvg, dragon) {
+  window.meleeFactory = function(dragon) {
     newMelee = function newMelee(characters) {
-      var melee = new Melee(characters, makeSvg, dragon);
-      dragon.addDraggable(melee);
-      return melee;
+      return new Melee(characters, dragon);
     };
 
     return newMelee;

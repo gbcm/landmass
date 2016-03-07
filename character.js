@@ -1,10 +1,10 @@
 (function(window) {
-  function CharacterCircle(name, makeSvg) {
-    this.circle = makeSvg('circle');
+  function CharacterCircle(name) {
+    this.circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
     this.circle.setAttribute('r', 20);
     this.circle.setAttribute('class', 'character');
 
-    this.text = makeSvg('text');
+    this.text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
     this.text.setAttribute('text-anchor', 'middle');
     this.text.innerHTML = name;
   }
@@ -23,9 +23,5 @@
     }
   };
 
-  window.characterCircleFactory = function(makeSvg) {
-    return function newCharacter(name) {
-      return new CharacterCircle(name, makeSvg);
-    };
-  };
+  window.CharacterCircle = CharacterCircle;
 })(window);

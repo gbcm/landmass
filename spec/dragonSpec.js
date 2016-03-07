@@ -17,7 +17,7 @@ describe('Dragon', function() {
   beforeEach(function() {
     this.root = document.createElement("div");
     this.subject = window.burninate(this.root);
-    this.meleeFactory = meleeFactory(document.createElementNS.bind(document, 'http://www.w3.org/2000/svg'), this.subject);
+    this.meleeFactory = meleeFactory(this.subject);
   });
 
   it('should allow a melee to be dragged onto 2 melees and only merge with 1', function() {
