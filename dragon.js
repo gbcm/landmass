@@ -40,8 +40,8 @@
         var matrix = root.getScreenCTM(),
           point = root.createSVGPoint();
 
-        point.x = event.clientX || event.pageX;
-        point.y = event.clientY || event.pageY;
+        point.x = event.clientX || event.touches[0].clientX;
+        point.y = event.clientY || event.touches[0].clientY;
         point = point.matrixTransform(matrix.inverse());
         dragon.draggedMelee.moveTo(point.x, point.y);
 
