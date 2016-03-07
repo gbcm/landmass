@@ -39,6 +39,10 @@
 
   Melee.prototype = {
     radius: 80,
+    receiveDrop: function (melee) {
+      this.addCharacterCircles(melee.characterCircles);
+      melee.remove();
+    },
     addCharacterCircles: function(chars) {
       this.characterCircles = this.characterCircles.concat(chars);
       this.updateLayout();
@@ -102,7 +106,7 @@
           m.moveTo(center.x + meleeCenter.x, center.y + meleeCenter.y);
         });
         this.remove();
-        this.dragon.removeMelee(this);
+        this.dragon.removeDraggable(this);
       }.bind(this);
 
       var firstTouchTime = null;
@@ -163,7 +167,7 @@
   window.meleeFactory = function(makeSvg, dragon) {
     newMelee = function newMelee(characters) {
       var melee = new Melee(characters, makeSvg, dragon);
-      dragon.addMelee(melee);
+      dragon.addDraggable(melee);
       return melee;
     };
 

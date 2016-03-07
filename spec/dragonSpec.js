@@ -33,7 +33,7 @@ describe('Dragon', function() {
     melee3.appendTo(this.root);
 
     spyOn(melee3, "remove");
-    spyOn(this.subject, "removeMelee").and.callThrough();
+    spyOn(this.subject, "removeDraggable").and.callThrough();
 
     melee1.moveTo(0, 0);
     melee2.moveTo(0, 0);
@@ -44,6 +44,6 @@ describe('Dragon', function() {
     expect(melee1.characterCircles).toEqual([characterFoo, characterBaz]);
     expect(melee2.characterCircles).toEqual([characterBar]);
     expect(melee3.remove).toHaveBeenCalled();
-    expect(this.subject.removeMelee).toHaveBeenCalledWith(melee3);
+    expect(this.subject.removeDraggable).toHaveBeenCalledWith(melee3);
   });
 });
