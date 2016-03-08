@@ -11,7 +11,6 @@
     },
 
     addCharacter: function (character) {
-      this.root.className = "";
       this.characters.push(character);
       this.render();
     },
@@ -22,6 +21,7 @@
     },
 
     render: function () {
+      this.root.className = this.characters.length === 0 ? "hidden": "";
       this.root.innerHTML = "";
       this.characters.sort(function(a, b) {
         return b.initiative - a.initiative;
@@ -50,6 +50,11 @@
         this.root.appendChild(characterItem);
       }.bind(this));
     },
+
+    removeCharacter: function(character) {
+      this.characters.splice(this.characters.indexOf(character), 1);
+      this.render();
+    }
   };
 
   window.CharacterList = CharacterList;

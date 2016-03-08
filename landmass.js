@@ -30,6 +30,9 @@
 
   window.bootLand = function() {
     root = $('svg');
+    root.width = root.clientWidth;
+    root.height = root.clientHeight;
+    root.setAttribute("viewBox", "0 0 " + root.clientWidth + " " + root.clientHeight);
     dragon = window.burninate(root);
     meleeFactory = window.meleeFactory(dragon);
 
@@ -38,13 +41,18 @@
 
     characterList = new CharacterList();
     characterList.appendTo(document.querySelector("#character_list"));
+
+    removalArea = new RemovalArea(root);
+    removalArea.appendTo(document.body);
+    dragon.addDropTarget(removalArea);
   };
 
   function add(event) {
     var characterName = $('.add-character input').value;
-    var characterCircle = new CharacterCircle(characterName),
+    var character = { name: characterName, initiative: 3 };
+    var characterCircle = new CharacterCircle(character, characterList),
       melee = meleeFactory([characterCircle]);
-    characterList.addCharacter({ name: characterName, initiative: 3 });
+    characterList.addCharacter(character);
     $('.add-character input').value = '';
     melee.appendTo(root);
     event.preventDefault();

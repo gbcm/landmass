@@ -1,6 +1,7 @@
 (function (window) {
   var Dragon = function (svg) {
     this.draggables = [];
+    this.dropTargets = [];
     this.isFirstMove = false;
     this.svg = svg;
     svg.addEventListener('mousemove', this.mousemovehandler.bind(this));
@@ -24,6 +25,7 @@
     },
     addDraggable: function (draggable, dragHandle) {
       this.draggables.push(draggable);
+      this.dropTargets.push(draggable);
 
       dragHandle.addEventListener('mousedown', function (event) {
         if (event.button === 0 && !event.altKey && !event.ctrlKey) {
@@ -35,8 +37,12 @@
         this.startDragging(draggable);
       }.bind(this));
     },
+    addDropTarget: function (dropTarget) {
+      this.dropTargets.push(dropTarget);
+    },
     removeDraggable: function (draggable) {
       this.draggables.splice(this.draggables.indexOf(draggable), 1);
+      this.dropTargets.splice(this.dropTargets.indexOf(draggable), 1);
     },
     eventCoordinates: function (event) {
       var matrix = this.svg.getScreenCTM(),
@@ -55,10 +61,10 @@
       }
     },
     renderPostMove: function(){
-      this.draggables.forEach(function (draggable) {
-        draggable.removeClass('incoming');
-        if (draggable.overlaps(this.thingBeingDragged)) {
-          draggable.addClass('incoming');
+      this.dropTargets.forEach(function (target) {
+        target.removeClass('incoming');
+        if (target.overlaps(this.thingBeingDragged)) {
+          target.addClass('incoming');
         }
       }.bind(this));
     },
@@ -72,15 +78,17 @@
       }
     },
     renderPreDrop: function(){
-      this.draggables.forEach(function (draggable) {
-        draggable.removeClass('incoming');
+      this.dropTargets.forEach(function (target) {
+        target.removeClass('incoming');
       });
     },
+
     findTarget: function () {
-      return this.draggables.find(function (draggable) {
-        return draggable.overlaps(this.thingBeingDragged);
+      return this.dropTargets.find(function (target) {
+        return target.overlaps(this.thingBeingDragged);
       }.bind(this));
     },
+
     mouseupHandler: function () {
       var target;
       this.renderPreDrop();

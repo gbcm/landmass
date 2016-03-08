@@ -98,6 +98,9 @@
     },
 
     remove: function() {
+      this.characterCircles.forEach(function (cc) {
+         cc.remove();
+      });
       this.characterCircles = [];
       this.circle.remove();
       this.circle = null;

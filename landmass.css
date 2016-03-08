@@ -39,6 +39,25 @@ svg {
   display: inline-block;
 }
 
+#removal_area {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  font-size: 16px;
+  border: solid 2px #860d0b;
+  border-bottom: none;
+  border-left: none;
+  border-radius: 0 10px 0 0;
+  padding: 40px;
+  margin: 0px;
+}
+
+#removal_area.incoming {
+  color: rgba(177, 54, 54, 1);
+  border-color: rgba(177, 54, 54, 1);
+  background-color: rgba(111, 88, 88, 0.2);
+}
+
 #character_list ol {
   position: absolute;
   top: 0;
