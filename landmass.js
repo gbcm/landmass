@@ -27,12 +27,16 @@
     });
   };
 
-
-  window.bootLand = function() {
-    root = $('svg');
+  var resizeSvg = function () {
     root.width = root.clientWidth;
     root.height = root.clientHeight;
     root.setAttribute("viewBox", "0 0 " + root.clientWidth + " " + root.clientHeight);
+  };
+
+  window.bootLand = function() {
+    root = $('svg');
+    resizeSvg();
+    window.addEventListener("resize", resizeSvg);
     dragon = window.burninate(root);
     meleeFactory = window.meleeFactory(dragon);
 
