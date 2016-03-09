@@ -73,6 +73,7 @@
       this.moveTo(500, 500);
 
       this.dragon.addDraggable(this, this.circle);
+      this.dragon.addDropTarget(this);
 
       bindDoubleClick(this.circle, this.doubleClickHandler.bind(this))
     },

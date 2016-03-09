@@ -1,7 +1,7 @@
 (function(window) {
   var document = window.document,
     $ = document.querySelector.bind(document);
-  var root, dragon, meleeFactory, characterList;
+  var root, dragon, meleeFactory, characterList, characterFactory;
 
   window.makeCircle = function (cssClass, radius) {
     var circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
@@ -39,12 +39,12 @@
     window.addEventListener("resize", resizeSvg);
     dragon = window.burninate(root);
     meleeFactory = window.meleeFactory(dragon);
+    characterList = new CharacterList();
+    characterFactory = window.characterFactory(characterList, dragon);
+    characterList.appendTo(document.querySelector("#character_list"));
 
     $('.add-character a').addEventListener('click', add);
     $('.add-character').addEventListener('submit', add);
-
-    characterList = new CharacterList();
-    characterList.appendTo(document.querySelector("#character_list"));
 
     removalArea = new RemovalArea(root);
     removalArea.appendTo(document.body);
@@ -54,7 +54,7 @@
   function add(event) {
     var characterName = $('.add-character input').value;
     var character = { name: characterName, initiative: 3 };
-    var characterCircle = new CharacterCircle(character, characterList),
+    var characterCircle = characterFactory(character, characterList),
       melee = meleeFactory([characterCircle]);
     characterList.addCharacter(character);
     $('.add-character input').value = '';

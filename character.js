@@ -1,4 +1,5 @@
 (function(window) {
+  var newCharacter;
   function CharacterCircle(character, characterList) {
     this.circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
     this.circle.setAttribute('r', 20);
@@ -32,5 +33,11 @@
     }
   };
 
-  window.CharacterCircle = CharacterCircle;
+  window.characterFactory = function(characterList, dragon) {
+    newCharacter = function newCharacter(character) {
+      return new CharacterCircle(character, characterList, dragon);
+    };
+
+    return newCharacter;
+  };
 })(window);

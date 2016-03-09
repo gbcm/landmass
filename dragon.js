@@ -25,7 +25,6 @@
     },
     addDraggable: function (draggable, dragHandle) {
       this.draggables.push(draggable);
-      this.dropTargets.push(draggable);
 
       dragHandle.addEventListener('mousedown', function (event) {
         if (event.button === 0 && !event.altKey && !event.ctrlKey) {
