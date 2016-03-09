@@ -98,9 +98,6 @@
     },
 
     remove: function() {
-      this.characterCircles.forEach(function (cc) {
-         cc.remove();
-      });
       this.characterCircles = [];
       this.circle.remove();
       this.circle = null;
@@ -108,6 +105,12 @@
         rangeBand.remove();
       });
       this.rangeBands = null;
+    },
+
+    removeCharacters: function() {
+      this.characterCircles.forEach(function (cc) {
+        cc.remove();
+      });
     },
 
     addClass: function(klass) {

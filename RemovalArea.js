@@ -11,6 +11,7 @@
       parent.appendChild(this.root);
     },
     receiveDrop: function (melee) {
+      melee.removeCharacters();
       melee.remove();
     },
     overlaps: function (other) {
