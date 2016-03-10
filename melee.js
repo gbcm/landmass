@@ -80,7 +80,11 @@
     },
     removeCharacterCircle: function (characterCircle) {
       this._characterCircles.splice(this._characterCircles.indexOf(characterCircle), 1);
-      this.updateLayout();
+      if (this._characterCircles.length === 0) {
+        this.remove();
+      } else {
+        this.updateLayout();
+      }
     },
     removeCharacters: function () {
       this._characterCircles.forEach(function (cc) {
@@ -122,10 +126,15 @@
     },
     droppedWithNoTarget: function () {
     },
+    droppedWithTarget: function () {
+      this.dragon.stopDragging();
+      this.remove();
+    },
     characterCircles: function () {
       return this._characterCircles;
     },
     remove: function () {
+      this.dragon.removeDraggable(this.thingBeingDragged);
       this._characterCircles = [];
       this.circle.remove();
       this.circle = null;
@@ -138,7 +147,6 @@
     //Implements Drop Target
     receiveDrop: function (draggedOntoMe) {
       this.addCharacterCircles(draggedOntoMe.characterCircles());
-      draggedOntoMe.remove();
     },
     overlaps: function (other) {
       if (this === other) {

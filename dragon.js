@@ -97,7 +97,7 @@
 
         if (target) {
           target.receiveDrop(this.thingBeingDragged);
-          this.removeDraggable(this.thingBeingDragged);
+          this.thingBeingDragged.droppedWithTarget();
         } else {
           this.thingBeingDragged.droppedWithNoTarget();
         }

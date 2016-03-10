@@ -18,6 +18,7 @@
     appendTo: function(parent) {
       parent.appendChild(this.text);
       parent.appendChild(this.circle);
+      this.parent = parent;
     },
     setParentMelee: function(melee) {
       this.parentMelee = melee;
@@ -40,10 +41,17 @@
       };
     },
     dropped:  function(){
-      this.parentMelee.removeCharacterCircle(this);
     },
     droppedWithNoTarget: function() {
-      window.alert("w00t");
+      this.parentMelee.removeCharacterCircle(this);
+      //Create a new melee
+      var m = new Melee([this], this.dragon);
+      var center = this.center();
+      m.appendTo(this.parent);
+      m.moveTo(center.x, center.y);
+    },
+    droppedWithTarget: function() {
+      this.parentMelee.removeCharacterCircle(this);
     },
     characterCircles: function(){
       return [this];
