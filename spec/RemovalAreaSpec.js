@@ -6,8 +6,7 @@ describe('RemovalArea', function () {
     document.body.appendChild(this.svg);
     this.subject.appendTo(document.body);
 
-    var dragon = window.burninate(this.svg);
-    this.meleeFactory = meleeFactory(dragon);
+    this.dragon = window.burninate(this.svg);
 
     this.subject.root.style.position = "absolute";
     this.subject.root.style.bottom = "0";
@@ -31,6 +30,11 @@ describe('RemovalArea', function () {
     };
   });
 
+  beforeEach(function() {
+    this.melee = new Melee([],this.dragon);
+    this.svgHeight = this.svg.clientHeight;
+  });
+
   afterEach(function () {
     document.body.removeChild(this.svg);
     this.subject.remove();
@@ -38,41 +42,35 @@ describe('RemovalArea', function () {
 
   describe('overlaps', function () {
     it("should return true when the circle's center is inside the subject", function () {
-      var melee = this.meleeFactory([]),
-        svgHeight = this.svg.clientHeight;
-      var point = this.htmlToSvgCoords(199, svgHeight - 199);
-      melee.appendTo(this.svg);
-      melee.moveTo(point.x, point.y);
+      var point = this.htmlToSvgCoords(199, this.svgHeight - 199);
+      this.melee.appendTo(this.svg);
+      this.melee.moveTo(point.x, point.y);
 
-      expect(this.subject.overlaps(melee)).toEqual(true);
+      expect(this.subject.overlaps(this.melee)).toEqual(true);
     });
 
     it("should return false when the circle does not overlap the subject", function () {
-      var melee = this.meleeFactory([]),
-        svgHeight = this.svg.clientHeight;
-      melee.appendTo(this.svg);
+      this.melee.appendTo(this.svg);
 
-      var point = this.htmlToSvgCoords(280, svgHeight);
-      melee.moveTo(point.x, point.y);
-      expect(this.subject.overlaps(melee)).toEqual(false);
+      var point = this.htmlToSvgCoords(280, this.svgHeight);
+      this.melee.moveTo(point.x, point.y);
+      expect(this.subject.overlaps(this.melee)).toEqual(false);
 
-      point = this.htmlToSvgCoords(0, svgHeight - 280);
-      melee.moveTo(point.x, point.y);
-      expect(this.subject.overlaps(melee)).toEqual(false);
+      point = this.htmlToSvgCoords(0, this.svgHeight - 280);
+      this.melee.moveTo(point.x, point.y);
+      expect(this.subject.overlaps(this.melee)).toEqual(false);
     });
 
     it("should return true when the circle's center is outside but it overlaps the subject", function () {
-      var melee = this.meleeFactory([]),
-        svgHeight = this.svg.clientHeight;
-      melee.appendTo(this.svg);
+      this.melee.appendTo(this.svg);
 
-      var point = this.htmlToSvgCoords(279, svgHeight);
-      melee.moveTo(point.x, point.y);
-      expect(this.subject.overlaps(melee)).toEqual(true);
+      var point = this.htmlToSvgCoords(279, this.svgHeight);
+      this.melee.moveTo(point.x, point.y);
+      expect(this.subject.overlaps(this.melee)).toEqual(true);
 
-      point = this.htmlToSvgCoords(0, svgHeight - 279);
-      melee.moveTo(point.x, point.y);
-      expect(this.subject.overlaps(melee)).toEqual(true);
+      point = this.htmlToSvgCoords(0, this.svgHeight - 279);
+      this.melee.moveTo(point.x, point.y);
+      expect(this.subject.overlaps(this.melee)).toEqual(true);
     });
   });
 });

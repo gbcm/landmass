@@ -1,13 +1,12 @@
 describe('Melee', function() {
   beforeEach(function() {
-    var dragon = window.burninate(document.createElement("div"));
-    this.meleeFactory = meleeFactory(document.createElementNS.bind(document, 'http://www.w3.org/2000/svg'), dragon);
-  });
+    this.dragon = window.burninate(document.createElement("div"));
+   });
 
   it('overlaps to the left', function() {
-    var melee1 = this.meleeFactory([]),
-      melee2 = this.meleeFactory([]),
-      melee3 = this.meleeFactory([]);
+    var melee1 = new Melee([], this.dragon),
+      melee2 = new Melee([], this.dragon),
+      melee3 = new Melee([], this.dragon);
 
     melee1.moveTo(0, 0);
     melee2.moveTo(155, 0);
@@ -18,9 +17,9 @@ describe('Melee', function() {
   });
 
   it('overlaps down', function() {
-    var melee1 = this.meleeFactory([]),
-      melee2 = this.meleeFactory([]),
-      melee3 = this.meleeFactory([]);
+    var melee1 = new Melee([], this.dragon),
+      melee2 = new Melee([], this.dragon),
+      melee3 = new Melee([], this.dragon);
 
     melee1.moveTo(0, 0);
     melee2.moveTo(0, 155);
@@ -31,9 +30,9 @@ describe('Melee', function() {
   });
 
   it('overlaps diagonally', function() {
-    var melee1 = this.meleeFactory([]),
-      melee2 = this.meleeFactory([]),
-      melee3 = this.meleeFactory([]);
+    var melee1 = new Melee([], this.dragon),
+      melee2 = new Melee([], this.dragon),
+      melee3 = new Melee([], this.dragon);
 
     melee1.moveTo(0, 0);
     melee2.moveTo(100, 100);
@@ -44,7 +43,7 @@ describe('Melee', function() {
   });
 
   it('does not overlap itself', function() {
-    var melee = this.meleeFactory([]);
+    var melee = new Melee([], this.dragon);
     melee.moveTo(0, 0);
 
     expect(melee.overlaps(melee)).toBe(false);

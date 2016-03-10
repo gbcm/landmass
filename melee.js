@@ -1,5 +1,4 @@
 (function(window) {
-  var newMelee;
   var characterOffsets = [
     { x: -40, y: -40 },
     { x: 0, y: -40 },
@@ -81,7 +80,7 @@
     doubleClickHandler: function () {
       var center = this.center();
       this.characterCircles.forEach(function (character, index) {
-        var m = newMelee([]);
+        var m = new Melee([], this.dragon);
         m.appendTo(this._parent);
         m.addCharacterCircles([character]);
         var meleeCenter = characterOffsets[index];
@@ -135,11 +134,5 @@
     }
   };
 
-  window.meleeFactory = function(dragon) {
-    newMelee = function newMelee(characters) {
-      return new Melee(characters, dragon);
-    };
-
-    return newMelee;
-  };
+  window.Melee = Melee;
 })(window);

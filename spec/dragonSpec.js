@@ -17,16 +17,15 @@ describe('Dragon', function() {
   beforeEach(function() {
     this.root = document.createElement("div");
     this.subject = window.burninate(this.root);
-    this.meleeFactory = meleeFactory(this.subject);
   });
 
   it('should allow a melee to be dragged onto 2 melees and only merge with 1', function() {
     var characterFoo = makeMockCharacter("foo"),
       characterBar = makeMockCharacter("bar"),
       characterBaz = makeMockCharacter("baz"),
-      melee1 = this.meleeFactory([characterFoo]),
-      melee2 = this.meleeFactory([characterBar]),
-      melee3 = this.meleeFactory([characterBaz]);
+      melee1 = new Melee([characterFoo], this.subject),
+      melee2 = new Melee([characterBar], this.subject),
+      melee3 = new Melee([characterBaz], this.subject);
 
     melee1.appendTo(this.root);
     melee2.appendTo(this.root);
