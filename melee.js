@@ -1,19 +1,19 @@
-(function(window) {
+(function (window) {
   var characterOffsets = [
-    { x: -40, y: -40 },
-    { x: 0, y: -40 },
-    { x: 40, y: -40 },
-    { x: -40, y: 0 },
-    { x: 0, y: 0 },
-    { x: 40, y: 0 },
-    { x: -40, y: 40 },
-    { x: 0, y: 40 },
-    { x: 40, y: 40 }
+    {x: -40, y: -40},
+    {x: 0, y: -40},
+    {x: 40, y: -40},
+    {x: -40, y: 0},
+    {x: 0, y: 0},
+    {x: 40, y: 0},
+    {x: -40, y: 40},
+    {x: 0, y: 40},
+    {x: 40, y: 40}
   ];
 
   function Melee(characterCircles, dragon) {
-    this.characterCircles = characterCircles.slice();
-    this.circle = makeCircle('melee',this.radius);
+    this._characterCircles = characterCircles.slice();
+    this.circle = makeCircle('melee', this.radius);
 
     this.rangeBands = [];
     this.rangeBands.push(makeCircle('long', this.radius * 7 + 30));
@@ -21,31 +21,38 @@
     this.rangeBands.push(makeCircle('close', this.radius * 3 + 10));
 
     this.dragon = dragon;
+    this._characterCircles.forEach(function (charCircle) {
+        charCircle.setParentMelee(this);
+      }.bind(this)
+    );
   }
 
   Melee.prototype = {
-    radius: 80,
-    addCharacterCircles: function(chars) {
-      this.characterCircles = this.characterCircles.concat(chars);
+    addCharacterCircles: function (chars) {
+      this._characterCircles = this._characterCircles.concat(chars);
+      this._characterCircles.forEach(function (charCircle) {
+          charCircle.setParentMelee(this);
+        }.bind(this)
+      );
       this.updateLayout();
       this.moveToTop();
     },
-    updateLayout: function() {
+    updateLayout: function () {
       var center = this.center();
 
-      for (var i = 0, length = this.characterCircles.length; i < length; i++) {
-        var character = this.characterCircles[i],
+      for (var i = 0, length = this._characterCircles.length; i < length; i++) {
+        var character = this._characterCircles[i],
           offset = characterOffsets[i];
         character.moveTo(center.x + offset.x, center.y + offset.y);
       }
 
-      this.rangeBands.forEach(function(rangeBand) {
+      this.rangeBands.forEach(function (rangeBand) {
         rangeBand.setAttribute('cx', center.x);
         rangeBand.setAttribute('cy', center.y);
       });
     },
 
-    appendTo: function(parent) {
+    appendTo: function (parent) {
       this._parent = parent;
       this.rangeBands.forEach(function (rangeBand) {
         parent.appendChild(rangeBand);
@@ -61,7 +68,7 @@
 
     doubleClickHandler: function () {
       var center = this.center();
-      this.characterCircles.forEach(function (character, index) {
+      this._characterCircles.forEach(function (character, index) {
         var m = new Melee([], this.dragon);
         m.appendTo(this._parent);
         m.addCharacterCircles([character]);
@@ -71,66 +78,76 @@
       this.remove();
       this.dragon.removeDraggable(this);
     },
-
-
-
-    remove: function() {
-      this.characterCircles = [];
-      this.circle.remove();
-      this.circle = null;
-      this.rangeBands.forEach(function(rangeBand) {
-        rangeBand.remove();
-      });
-      this.rangeBands = null;
+    removeCharacterCircle: function (characterCircle) {
+      this._characterCircles.splice(this._characterCircles.indexOf(characterCircle), 1);
+      this.updateLayout();
     },
-
-    removeCharacters: function() {
-      this.characterCircles.forEach(function (cc) {
+    removeCharacters: function () {
+      this._characterCircles.forEach(function (cc) {
         cc.remove();
       });
     },
 
-    addClass: function(klass) {
+    addClass: function (klass) {
       this.circle.classList.add(klass);
     },
 
-    removeClass: function(klass) {
+    removeClass: function (klass) {
       this.circle.classList.remove(klass);
     },
 
     //Implements Draggable
-    moveToTop: function() {
+    moveToTop: function () {
       this._parent.appendChild(this.circle);
-      this.characterCircles.forEach(function(child) {
+      this._characterCircles.forEach(function (child) {
         child.appendTo(this._parent);
       }.bind(this));
     },
-    moveTo: function(x, y) {
+    moveTo: function (x, y) {
       this.circle.setAttribute('cx', x);
       this.circle.setAttribute('cy', y);
 
       this.updateLayout();
     },
-    center: function() {
+
+    radius: 80,
+
+    center: function () {
       return {
         x: parseFloat(this.circle.getAttribute('cx')),
         y: parseFloat(this.circle.getAttribute('cy'))
       };
     },
-    
-    //Implements Drop Target
-    receiveDrop: function (melee) {
-      this.addCharacterCircles(melee.characterCircles);
-      melee.remove();
+    dropped: function () {
     },
-    overlaps: function(other) {
+    droppedWithNoTarget: function () {
+    },
+    characterCircles: function () {
+      return this._characterCircles;
+    },
+    remove: function () {
+      this._characterCircles = [];
+      this.circle.remove();
+      this.circle = null;
+      this.rangeBands.forEach(function (rangeBand) {
+        rangeBand.remove();
+      });
+      this.rangeBands = null;
+    },
+
+    //Implements Drop Target
+    receiveDrop: function (draggedOntoMe) {
+      this.addCharacterCircles(draggedOntoMe.characterCircles());
+      draggedOntoMe.remove();
+    },
+    overlaps: function (other) {
       if (this === other) {
         return false;
       }
 
       var center = this.center(),
-      otherCenter = other.center(),
-      centerDistance = Math.sqrt(Math.pow(center.x - otherCenter.x, 2) + Math.pow(center.y - otherCenter.y, 2));
+        otherCenter = other.center(),
+        centerDistance = Math.sqrt(Math.pow(center.x - otherCenter.x, 2) + Math.pow(center.y - otherCenter.y, 2));
 
       return (centerDistance - this.radius - other.radius) <= -5;
     }

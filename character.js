@@ -1,9 +1,8 @@
 (function(window) {
-  var newCharacter;
-  function CharacterCircle(character, characterList) {
+
+  function CharacterCircle(character, characterList, dragon) {
     this.circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-    this.circle.setAttribute('r', 20);
-    this.circle.setAttribute('class', 'character');
+    this.circle = makeCircle('character', this.radius);
 
     this.text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
     this.text.setAttribute('text-anchor', 'middle');
@@ -11,6 +10,8 @@
 
     this.characterList = characterList;
     this.character = character;
+    this.dragon = dragon;
+    this.dragon.addDraggable(this, this.circle);
   }
 
   CharacterCircle.prototype = {
@@ -18,26 +19,41 @@
       parent.appendChild(this.text);
       parent.appendChild(this.circle);
     },
+    setParentMelee: function(melee) {
+      this.parentMelee = melee;
+    },
 
+    //Implements Draggable
+    moveToTop: function() {
+    },
     moveTo: function(x, y) {
       this.circle.setAttribute('cx', x);
       this.circle.setAttribute('cy', y);
       this.text.setAttribute('x', x);
       this.text.setAttribute('y', y + 5);
     },
-
+    radius: 20,
+    center: function() {
+      return {
+        x: parseFloat(this.circle.getAttribute('cx')),
+        y: parseFloat(this.circle.getAttribute('cy'))
+      };
+    },
+    dropped:  function(){
+      this.parentMelee.removeCharacterCircle(this);
+    },
+    droppedWithNoTarget: function() {
+      window.alert("w00t");
+    },
+    characterCircles: function(){
+      return [this];
+    },
     remove: function () {
       this.circle.parentNode.removeChild(this.circle);
       this.text.parentNode.removeChild(this.text);
       this.characterList.removeCharacter(this.character);
-    }
+    },
   };
 
-  window.characterFactory = function(characterList, dragon) {
-    newCharacter = function newCharacter(character) {
-      return new CharacterCircle(character, characterList, dragon);
-    };
-
-    return newCharacter;
-  };
+  window.CharacterCircle = CharacterCircle;
 })(window);

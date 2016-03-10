@@ -40,8 +40,8 @@ describe('Dragon', function() {
     melee3.moveTo(0, 0);
     triggerMouseEvent(melee3.circle, "mouseup");
 
-    expect(melee1.characterCircles).toEqual([characterFoo, characterBaz]);
-    expect(melee2.characterCircles).toEqual([characterBar]);
+    expect(melee1._characterCircles).toEqual([characterFoo, characterBaz]);
+    expect(melee2._characterCircles).toEqual([characterBar]);
     expect(melee3.remove).toHaveBeenCalled();
     expect(this.subject.removeDraggable).toHaveBeenCalledWith(melee3);
   });

@@ -92,11 +92,14 @@
       var target;
       this.renderPreDrop();
       if (this.thingBeingDragged) {
+        this.thingBeingDragged.dropped();
         target = this.findTarget();
 
         if (target) {
           target.receiveDrop(this.thingBeingDragged);
           this.removeDraggable(this.thingBeingDragged);
+        } else {
+          this.thingBeingDragged.droppedWithNoTarget();
         }
       }
 
