@@ -10,18 +10,6 @@
     appendTo: function (parent) {
       parent.appendChild(this.root);
     },
-    receiveDrop: function (melee) {
-      melee.removeCharacters();
-      melee.remove();
-    },
-    overlaps: function (other) {
-      if (!other.circle) {
-        return false;
-      }
-      var theirCenter = this.toHtmlCoords(other.center());
-      var ourRect = this.root.getBoundingClientRect();
-      return (theirCenter.x - other.radius) < ourRect.right && (theirCenter.y + other.radius) > ourRect.top;
-    },
     toHtmlCoords: function (coords) {
       var matrix = this.svg.getScreenCTM(),
         point = this.svg.createSVGPoint();
@@ -38,7 +26,21 @@
     },
     remove: function(){
       this.root.parentNode.removeChild(this.root);
-    }
+    },
+
+    //Implements Drop Target
+    receiveDrop: function (melee) {
+      melee.removeCharacters();
+      melee.remove();
+    },
+    overlaps: function (other) {
+      if (!other.circle) {
+        return false;
+      }
+      var theirCenter = this.toHtmlCoords(other.center());
+      var ourRect = this.root.getBoundingClientRect();
+      return (theirCenter.x - other.radius) < ourRect.right && (theirCenter.y + other.radius) > ourRect.top;
+    },
   };
 
   window.RemovalArea = RemovalArea;

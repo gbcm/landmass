@@ -25,10 +25,6 @@
 
   Melee.prototype = {
     radius: 80,
-    receiveDrop: function (melee) {
-      this.addCharacterCircles(melee.characterCircles);
-      melee.remove();
-    },
     addCharacterCircles: function(chars) {
       this.characterCircles = this.characterCircles.concat(chars);
       this.updateLayout();
@@ -47,20 +43,6 @@
         rangeBand.setAttribute('cx', center.x);
         rangeBand.setAttribute('cy', center.y);
       });
-    },
-
-    center: function() {
-      return {
-        x: parseFloat(this.circle.getAttribute('cx')),
-        y: parseFloat(this.circle.getAttribute('cy'))
-      };
-    },
-
-    moveTo: function(x, y) {
-      this.circle.setAttribute('cx', x);
-      this.circle.setAttribute('cy', y);
-
-      this.updateLayout();
     },
 
     appendTo: function(parent) {
@@ -90,12 +72,7 @@
       this.dragon.removeDraggable(this);
     },
 
-    moveToTop: function() {
-      this._parent.appendChild(this.circle);
-      this.characterCircles.forEach(function(child) {
-        child.appendTo(this._parent);
-      }.bind(this));
-    },
+
 
     remove: function() {
       this.characterCircles = [];
@@ -121,6 +98,31 @@
       this.circle.classList.remove(klass);
     },
 
+    //Implements Draggable
+    moveToTop: function() {
+      this._parent.appendChild(this.circle);
+      this.characterCircles.forEach(function(child) {
+        child.appendTo(this._parent);
+      }.bind(this));
+    },
+    moveTo: function(x, y) {
+      this.circle.setAttribute('cx', x);
+      this.circle.setAttribute('cy', y);
+
+      this.updateLayout();
+    },
+    center: function() {
+      return {
+        x: parseFloat(this.circle.getAttribute('cx')),
+        y: parseFloat(this.circle.getAttribute('cy'))
+      };
+    },
+    
+    //Implements Drop Target
+    receiveDrop: function (melee) {
+      this.addCharacterCircles(melee.characterCircles);
+      melee.remove();
+    },
     overlaps: function(other) {
       if (this === other) {
         return false;
