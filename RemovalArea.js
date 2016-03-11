@@ -29,10 +29,7 @@
     },
 
     //Implements Drop Target
-    receiveDrop: function (melee) {
-      melee.removeCharacters();
-      melee.remove();
-    },
+    isRemovalArea: true,
     overlaps: function (other) {
       if (!other.circle) {
         return false;

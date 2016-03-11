@@ -76,7 +76,6 @@
         m.moveTo(center.x + meleeCenter.x, center.y + meleeCenter.y);
       }.bind(this));
       this.remove();
-      this.dragon.removeDraggable(this);
     },
     removeCharacterCircle: function (characterCircle) {
       this._characterCircles.splice(this._characterCircles.indexOf(characterCircle), 1);
@@ -99,6 +98,16 @@
     removeClass: function (klass) {
       this.circle.classList.remove(klass);
     },
+    remove: function () {
+      this.dragon.removeDraggable(this);
+      this._characterCircles = [];
+      this.circle.remove();
+      this.circle = null;
+      this.rangeBands.forEach(function (rangeBand) {
+        rangeBand.remove();
+      });
+      this.rangeBands = null;
+    },
 
     //Implements Draggable
     moveToTop: function () {
@@ -113,41 +122,30 @@
 
       this.updateLayout();
     },
-
+    handleDrop: function(target) {
+      this.dragon.stopDragging();
+      if (target) {
+        if (target.isMelee) {
+          target.addCharacterCircles(this._characterCircles);
+          this.remove();
+        } else if (target.isRemovalArea) {
+          this.removeCharacters();
+          this.remove();
+        } else {
+          console.log("Melee has been dropped onto something unknown")
+        }
+      }
+    },
     radius: 80,
-
     center: function () {
       return {
         x: parseFloat(this.circle.getAttribute('cx')),
         y: parseFloat(this.circle.getAttribute('cy'))
       };
     },
-    dropped: function () {
-    },
-    droppedWithNoTarget: function () {
-    },
-    droppedWithTarget: function () {
-      this.dragon.stopDragging();
-      this.remove();
-    },
-    characterCircles: function () {
-      return this._characterCircles;
-    },
-    remove: function () {
-      this.dragon.removeDraggable(this.thingBeingDragged);
-      this._characterCircles = [];
-      this.circle.remove();
-      this.circle = null;
-      this.rangeBands.forEach(function (rangeBand) {
-        rangeBand.remove();
-      });
-      this.rangeBands = null;
-    },
 
     //Implements Drop Target
-    receiveDrop: function (draggedOntoMe) {
-      this.addCharacterCircles(draggedOntoMe.characterCircles());
-    },
+    isMelee: true,
     overlaps: function (other) {
       if (this === other) {
         return false;

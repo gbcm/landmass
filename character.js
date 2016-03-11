@@ -18,10 +18,15 @@
     appendTo: function(parent) {
       parent.appendChild(this.text);
       parent.appendChild(this.circle);
-      this.parent = parent;
+      this._parent = parent;
     },
     setParentMelee: function(melee) {
       this.parentMelee = melee;
+    },
+    remove: function () {
+      this.circle.parentNode.removeChild(this.circle);
+      this.text.parentNode.removeChild(this.text);
+      this.characterList.removeCharacter(this.character);
     },
 
     //Implements Draggable
@@ -40,27 +45,26 @@
         y: parseFloat(this.circle.getAttribute('cy'))
       };
     },
-    dropped:  function(){
-    },
-    droppedWithNoTarget: function() {
-      this.parentMelee.removeCharacterCircle(this);
-      //Create a new melee
-      var m = new Melee([this], this.dragon);
-      var center = this.center();
-      m.appendTo(this.parent);
-      m.moveTo(center.x, center.y);
-    },
-    droppedWithTarget: function() {
-      this.parentMelee.removeCharacterCircle(this);
-    },
-    characterCircles: function(){
-      return [this];
-    },
-    remove: function () {
-      this.circle.parentNode.removeChild(this.circle);
-      this.text.parentNode.removeChild(this.text);
-      this.characterList.removeCharacter(this.character);
-    },
+    handleDrop: function(target) {
+      this.dragon.stopDragging();
+      if (target) {
+        if (target.isMelee) {
+          this.parentMelee.removeCharacterCircle(this);
+          target.addCharacterCircles([this]);
+        } else if (target.isRemovalArea) {
+          this.parentMelee.removeCharacterCircle(this);
+          this.remove();
+        } else {
+          console.log("character dropped onto unknown");
+        }
+      } else {
+        this.parentMelee.removeCharacterCircle(this);
+        var m = new Melee([this], this.dragon);
+        var center = this.center();
+        m.appendTo(this._parent);
+        m.moveTo(center.x, center.y);
+      }
+    }
   };
 
   window.CharacterCircle = CharacterCircle;

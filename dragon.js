@@ -89,21 +89,11 @@
     },
 
     mouseupHandler: function () {
-      var target;
-      this.renderPreDrop();
       if (this.thingBeingDragged) {
-        this.thingBeingDragged.dropped();
-        target = this.findTarget();
-
-        if (target) {
-          target.receiveDrop(this.thingBeingDragged);
-          this.thingBeingDragged.droppedWithTarget();
-        } else {
-          this.thingBeingDragged.droppedWithNoTarget();
-        }
+        this.renderPreDrop();
+        var target = this.findTarget();
+        this.thingBeingDragged.handleDrop(target);
       }
-
-      this.stopDragging();
     }
   };
 
