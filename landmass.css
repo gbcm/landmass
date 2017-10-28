@@ -58,6 +58,25 @@ svg {
   background-color: rgba(111, 88, 88, 0.2);
 }
 
+#color_change_area {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(5, 5, 128, 0.2);
+  border: solid 2px #1111DD;
+  border-bottom: none;
+  border-right: none;
+  border-radius: 10px 0 0 0;
+  padding: 30px;
+  margin: 0px;
+}
+
+#color_change_area.incoming {
+  color: rgba(177, 54, 54, 1);
+  border-color: rgba(177, 54, 54, 1);
+  background-color: rgba(111, 88, 88, 0.2);
+}
+
 #character_list ol {
   position: absolute;
   top: 0;
@@ -88,6 +107,10 @@ svg {
   cursor: move;
 }
 
+.melee.blue {
+  stroke: rgba(54, 54, 177, 0.4);
+}
+
 .melee.incoming {
   stroke: rgba(177, 54, 54, 1);
 }
@@ -99,6 +122,11 @@ svg {
   cursor: move;
 }
 
+.close.blue {
+  stroke: rgba(54, 54, 177, 0.4);
+  fill: rgba(0, 0, 255, 0.1);
+}
+
 .medium {
   stroke: rgba(255, 174, 0, 0.4);
   stroke-width: 3px;
@@ -106,11 +134,21 @@ svg {
   cursor: move;
 }
 
+.medium.blue {
+  stroke: rgba(0, 174, 255, 0.4);
+  fill: rgba(0, 174, 255, 0.1);
+}
+
 .long {
   stroke: rgba(255, 247, 0, 0.4);
   stroke-width: 3px;
   fill: rgba(255, 247, 0, 0.1);
   cursor: move;
+}
+
+.long.blue {
+  stroke: rgba(0, 247, 255, 0.4);
+  fill: rgba(0, 247, 255, 0.1);
 }
 
 .character {

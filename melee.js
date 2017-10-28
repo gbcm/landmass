@@ -131,6 +131,11 @@
         } else if (target.isRemovalArea) {
           this.removeCharacters();
           this.remove();
+        } else if (target.isColorChangeArea) {
+          this.addClass('blue');
+          this.rangeBands.forEach(function (rb) {
+            rb.classList.add('blue');
+          });
         } else {
           console.log("Melee has been dropped onto something unknown")
         }

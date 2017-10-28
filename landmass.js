@@ -47,6 +47,10 @@
     removalArea = new RemovalArea(root);
     removalArea.appendTo(document.body);
     dragon.addDropTarget(removalArea);
+
+    colorChangeArea = new ColorChangeArea(root);
+    colorChangeArea.appendTo(document.body);
+    dragon.addDropTarget(colorChangeArea);
   };
 
   function add(event) {
